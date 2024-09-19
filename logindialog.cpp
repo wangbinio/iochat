@@ -4,6 +4,7 @@
 
 #include "httpmgr.h"
 #include "qpushbutton.h"
+#include "tcp_manager.h"
 #include "ui_logindialog.h"
 
 LoginDialog::LoginDialog(QWidget* parent) : QDialog(parent),
@@ -38,6 +39,12 @@ LoginDialog::LoginDialog(QWidget* parent) : QDialog(parent),
 
   connect(HttpMgr::GetInstance().get(), &HttpMgr::sig_login_mod_finish, this,
       &LoginDialog::slot_login_mod_finished);
+
+  connect(this, &LoginDialog::sig_connect_tcp, TcpManager::GetInstance().get(),
+      &TcpManager::slot_tcp_connect);
+
+  connect(TcpManager::GetInstance().get(), &TcpManager::sig_con_success,
+      this, &LoginDialog::slot_tcp_con_finished);
 }
 
 LoginDialog::~LoginDialog() {
@@ -66,6 +73,20 @@ void LoginDialog::slot_login_mod_finished(ReqId id, QString res,
   handlers_[id](json);
 }
 
+void LoginDialog::slot_tcp_con_finished(bool success) {
+  if (!success) {
+    fmt::print("网络异常\n");
+    return;
+  }
+  showTip(tr("聊天服务器连接成功, 正在登录..."), true);
+  nlohmann::json json;
+  json["uid"] = server_info_.uid;
+  json["token"] = server_info_.token.toStdString();
+
+  TcpManager::GetInstance()->sig_send_data(ReqId::kIdCHAT_LOGIN,
+      json.dump().c_str());
+}
+
 void LoginDialog::initHttpHandlers() {
   handlers_[kIdLOGIN_USER] = [this](nlohmann::json& json) {
     int error_code = json["error"];
@@ -74,11 +95,16 @@ void LoginDialog::initHttpHandlers() {
       return;
     }
 
-    showTip(tr("登录成功"), true);
+    server_info_.host = QString::fromStdString(json["host"]);
+    server_info_.port = QString::fromStdString(json["port"]);
+    server_info_.token = QString::fromStdString(json["token"]);
+    server_info_.uid = json["uid"];
+
+    emit sig_connect_tcp(server_info_);
   };
 }
 
-void LoginDialog::showTip(QString text, bool normal) {
+void LoginDialog::showTip(const QString& text, const bool normal) {
   ui->error_label->setText(text);
 
   ui->error_label->setProperty("state", normal ? "normal" : "error");

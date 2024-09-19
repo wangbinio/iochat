@@ -43,6 +43,8 @@ set(PROJECT_SOURCES
         resetdialog.cpp
         resetdialog.h
         resetdialog.ui
+        tcp_manager.cpp
+        tcp_manager.h
 )
 
 add_executable(iochat

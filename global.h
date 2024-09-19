@@ -97,3 +97,10 @@ enum ClickLbState {
   kNormal = 0,
   kSelected = 1
 };
+
+struct ServerInfo {
+  QString host;
+  QString port;
+  QString token;
+  int uid;
+};
