@@ -7,22 +7,32 @@
 #include <QMouseEvent>
 
 ClickedLabel::ClickedLabel(QWidget* parent): cur_state_(kNormal) {
-  normal_ = "unvisible";
-  normal_hover_ = "unvisible_hover";
-  normal_press_ = "";
-  selected_ = "visible";
-  selected_hover_ = "visible_hover";
-  selected_press_ = "";
+  // normal_ = "unvisible";
+  // normal_hover_ = "unvisible_hover";
+  // normal_press_ = "";
+  // selected_ = "visible";
+  // selected_hover_ = "visible_hover";
+  // selected_press_ = "";
 
-  setProperty("state", normal_);
+  // setProperty("state", normal_);
   setCursor(Qt::PointingHandCursor);
 }
 
 void ClickedLabel::mousePressEvent(QMouseEvent* event) {
   if (event->button() == Qt::LeftButton) {
     cur_state_ = static_cast<ClickLbState>(!cur_state_);
+    updateState(cur_state_ == kNormal ? normal_press_ : selected_press_);
+    return;
+  }
+  QLabel::mousePressEvent(event);
+}
+
+void ClickedLabel::mouseReleaseEvent(QMouseEvent* event) {
+  if (event->button() == Qt::LeftButton) {
+    cur_state_ = static_cast<ClickLbState>(!cur_state_);
     updateState(cur_state_ == kNormal ? normal_hover_ : selected_hover_);
     emit clicked();
+    return;
   }
   QLabel::mousePressEvent(event);
 }

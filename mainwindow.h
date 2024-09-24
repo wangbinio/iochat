@@ -3,6 +3,7 @@
 #include <QMainWindow>
 
 #include "resetdialog.h"
+#include "chatdialog.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -25,6 +26,7 @@ public:
   void showLoginDialog();
   void showRegisterDialog();
   void showResetDialog();
+  void showChatDialog();
   static void clearLineEdit(const QWidget* widget);
 
 private:
@@ -32,4 +34,5 @@ private:
   LoginDialog* login_dlg_;
   RegisterDialog* register_dlg_;
   ResetDialog* reset_dlg_;
+  ChatDialog* chat_dlg_;
 };

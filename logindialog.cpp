@@ -29,6 +29,7 @@ LoginDialog::LoginDialog(QWidget* parent) : QDialog(parent),
       showTip(tr("密码长度应为6-15"), false);
       return;
     }
+    enableBtn(false);
 
     nlohmann::json json;
     json["user"] = name.toStdString();
@@ -45,6 +46,9 @@ LoginDialog::LoginDialog(QWidget* parent) : QDialog(parent),
 
   connect(TcpManager::GetInstance().get(), &TcpManager::sig_con_success,
       this, &LoginDialog::slot_tcp_con_finished);
+
+  connect(TcpManager::GetInstance().get(), &TcpManager::sig_login_failed,
+      this, &LoginDialog::slot_login_failed);
 }
 
 LoginDialog::~LoginDialog() {
@@ -83,8 +87,12 @@ void LoginDialog::slot_tcp_con_finished(bool success) {
   json["uid"] = server_info_.uid;
   json["token"] = server_info_.token.toStdString();
 
-  TcpManager::GetInstance()->sig_send_data(ReqId::kIdCHAT_LOGIN,
+  emit TcpManager::GetInstance()->sig_send_data(ReqId::kIdCHAT_LOGIN,
       json.dump().c_str());
+}
+
+void LoginDialog::slot_login_failed(int error_code) {
+  showTip(QString("登录失败，错误码 %1").arg(error_code), false);
 }
 
 void LoginDialog::initHttpHandlers() {
@@ -110,4 +118,13 @@ void LoginDialog::showTip(const QString& text, const bool normal) {
   ui->error_label->setProperty("state", normal ? "normal" : "error");
 
   Repolish()(ui->error_label);
+
+  if (!normal) {
+    enableBtn(true);
+  }
+}
+
+void LoginDialog::enableBtn(bool enable) {
+  ui->login_btn->setEnabled(enable);
+  ui->forget_btn->setEnabled(enable);
 }

@@ -16,6 +16,10 @@ RegisterDialog::RegisterDialog(QWidget* parent) : QDialog(parent),
   ui->passwd_lineEdit->setEchoMode(QLineEdit::Password);
   ui->passwd_comfirm_lineEdit->setEchoMode(QLineEdit::Password);
   ui->error_label->setProperty("state", "normal");
+  ui->confirm_visible->setState("unvisible", "unvisible_hover", "", "visible",
+      "visible_hover", "");
+  ui->passwd_visible->setState("unvisible", "unvisible_hover", "", "visible",
+      "visible_hover", "");
   Repolish()(ui->error_label);
   ui->error_label->clear();
 

@@ -45,6 +45,43 @@ set(PROJECT_SOURCES
         resetdialog.ui
         tcp_manager.cpp
         tcp_manager.h
+        chatdialog.cpp
+        chatdialog.h
+        chatdialog.ui
+        user_manager.cpp
+        user_manager.h
+        clickedbtn.cpp
+        clickedbtn.h
+        clickedbtn.ui
+        statelabel.cpp
+        statelabel.h
+        statelabel.ui
+        customizeedit.cpp
+        customizeedit.h
+        customizeedit.ui
+        searchlist.cpp
+        searchlist.h
+        searchlist.ui
+        chatuserlist.cpp
+        chatuserlist.h
+        chatuserlist.ui
+        messagetextedit.cpp
+        messagetextedit.h
+        messagetextedit.ui
+        chatview.cpp
+        chatview.h
+        chatview.ui
+        chatuserwidget.cpp
+        chatuserwidget.h
+        chatuserwidget.ui
+        list_item_base.cpp
+        list_item_base.h
+        loadingdialog.cpp
+        loadingdialog.h
+        loadingdialog.ui
+        chatpage.cpp
+        chatpage.h
+        chatpage.ui
 )
 
 add_executable(iochat

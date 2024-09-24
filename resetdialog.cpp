@@ -14,6 +14,8 @@ ResetDialog::ResetDialog(QWidget* parent) :
   QDialog(parent), ui(new Ui::ResetDialog) {
   ui->setupUi(this);
 
+  ui->passwd_visible->setState("unvisible", "unvisible_hover", "", "visible",
+      "visible_hover", "");
   initHttpHandlers();
 
   connect(ui->sure_btn, &QPushButton::clicked, [this] {

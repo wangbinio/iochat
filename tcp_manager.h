@@ -24,6 +24,8 @@ public slots:
 signals:
   void sig_send_data(ReqId req_id, QByteArray data);
   void sig_con_success(bool success);
+  void sig_login_failed(int error_code);
+  void sig_login_success();
 
 private:
   TcpManager();

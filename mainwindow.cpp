@@ -1,20 +1,22 @@
-#include "mainwindow.h"
-
-#include <QLineEdit>
-#include <QStackedWidget>
-
 #include "./ui_mainwindow.h"
 #include "logindialog.h"
-
-
+#include "mainwindow.h"
 #include "qnamespace.h"
 #include "registerdialog.h"
+#include "tcp_manager.h"
+#include <QLineEdit>
+#include <QStackedWidget>
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent),
                                           ui(new Ui::MainWindow) {
   ui->setupUi(this);
 
+  connect(TcpManager::GetInstance().get(), &TcpManager::sig_login_success,
+      this, &MainWindow::showChatDialog);
+
   showLoginDialog();
+
+  emit TcpManager::GetInstance()->sig_login_success();
 }
 
 void MainWindow::showLoginDialog() {
@@ -42,6 +44,14 @@ void MainWindow::showResetDialog() {
   connect(reset_dlg_, &ResetDialog::switchLogin, this,
       &MainWindow::showLoginDialog);
   setCentralWidget(reset_dlg_);
+}
+
+void MainWindow::showChatDialog() {
+  chat_dlg_ = new ChatDialog(this);
+  chat_dlg_->setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
+  setCentralWidget(chat_dlg_);
+  setMinimumSize({800, 600});
+  setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
 }
 
 MainWindow::~MainWindow() { delete ui; }

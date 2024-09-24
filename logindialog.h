@@ -18,6 +18,7 @@ public:
 public slots:
   void slot_login_mod_finished(ReqId id, QString res, ErrorCode error_code);
   void slot_tcp_con_finished(bool success);
+  void slot_login_failed(int error_code);
 
 signals:
   void switchRegister();
@@ -31,4 +32,5 @@ private:
   QMap<ReqId, std::function<void(nlohmann::json&)>> handlers_;
   void initHttpHandlers();
   void showTip(const QString&, bool);
+  void enableBtn(bool enable = true);
 };

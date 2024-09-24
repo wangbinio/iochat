@@ -3,6 +3,7 @@
 //
 
 #include "tcp_manager.h"
+#include "user_manager.h"
 #include <QBuffer>
 
 TcpManager::TcpManager() {
@@ -82,6 +83,7 @@ void TcpManager::InitHandlers() {
         if (req_id != kIdCHAT_LOGIN_RSP) {
           fmt::print("Error: kIdCHAT_LOGIN_RSP recv {}\n",
               static_cast<int>(req_id));
+          emit sig_login_failed(kErrorJson);
           return;
         }
         try {
@@ -89,11 +91,18 @@ void TcpManager::InitHandlers() {
           const auto error_code = json["error"].get<int>();
           if (error_code != kSuccess) {
             fmt::print("Login Error {}\n", error_code);
+            emit sig_login_failed(kErrorJson);
             return;
           }
+          UserManager::GetInstance()->SetUser(json["id"].get<int>(),
+              json["name"].get<std::string>().data(),
+              json["token"].get<std::string>().data());
+
           fmt::print("Login Success\n");
+          emit sig_login_success();
         } catch (std::exception& exception) {
           fmt::print("Login Error {}\n", exception.what());
+          emit sig_login_failed(kErrorJson);
         }
       };
 }
