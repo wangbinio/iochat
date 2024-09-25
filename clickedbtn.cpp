@@ -17,7 +17,7 @@ ClickedBtn::ClickedBtn(QWidget* parent) :
 ClickedBtn::~ClickedBtn() {
 }
 
-void ClickedBtn::setState(QString normal, QString hover, QString press) {
+void ClickedBtn::setState(const QString& normal, const QString& hover, const QString& press) {
   normal_ = normal;
   hover_ = hover;
   press_ = press;
@@ -45,7 +45,7 @@ void ClickedBtn::mouseReleaseEvent(QMouseEvent* event) {
   QPushButton::mouseReleaseEvent(event);
 }
 
-void ClickedBtn::updateState(QString state) {
+void ClickedBtn::updateState(const QString& state) {
   setProperty("state", state);
   repolish(this);
   update();

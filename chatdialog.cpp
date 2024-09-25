@@ -70,6 +70,8 @@ ChatDialog::ChatDialog(QWidget* parent) :
   addChatUserList();
 
   showSearch(false);
+
+  initSideBar();
 }
 
 ChatDialog::~ChatDialog() {
@@ -87,7 +89,42 @@ void ChatDialog::slot_loading_chat_user() {
   loading_ = false;
 }
 
-void ChatDialog::showSearch(bool search) {
+void ChatDialog::slot_side_chat() {
+  clearLabelState(ui->side_chat_lb);
+  ui->stackedWidget->setCurrentWidget(ui->chat_page);
+  state_ = ChatUiMode::kChatMode;
+  showSearch(false);
+}
+
+void ChatDialog::slot_side_contact() {
+  clearLabelState(ui->side_contact_lb);
+  ui->stackedWidget->setCurrentWidget(ui->friend_apply_page);
+  state_ = ChatUiMode::kContactMode;
+  showSearch(false);
+}
+
+void ChatDialog::initSideBar() {
+  QPixmap pixmap(":/res/head_1.jpg");
+  pixmap = pixmap.scaled(ui->side_head_lb->size(), Qt::KeepAspectRatio);
+  ui->side_head_lb->setPixmap(pixmap);
+  ui->side_head_lb->setScaledContents(true);
+
+  ui->side_chat_lb->setState("normal", "hover", "pressed", "selected_normal",
+      "selected_hover", "selected_pressed");
+  ui->side_chat_lb->setProperty("state", "selected_normal");
+  ui->side_contact_lb->setState("normal", "hover", "pressed", "selected_normal",
+      "selected_hover", "selected_pressed");
+
+  addLabelGroup(ui->side_chat_lb);
+  addLabelGroup(ui->side_contact_lb);
+
+  connect(ui->side_chat_lb, &StateWidget::clicked, this,
+      &ChatDialog::slot_side_chat);
+  connect(ui->side_contact_lb, &StateWidget::clicked, this,
+      &ChatDialog::slot_side_contact);
+}
+
+void ChatDialog::showSearch(const bool search) {
   if (search) {
     ui->chat_user_list->hide();
     ui->con_user_list->hide();
@@ -114,14 +151,25 @@ void ChatDialog::addChatUserList() {
     const auto name_index = value % names.size();
     const auto message_index = value % messages.size();
 
-    auto chat_user_wid = new ChatUserWidget();
+    const auto chat_user_wid = new ChatUserWidget();
     chat_user_wid->setInfo(QString(names[name_index]).append(QString::number
             (++index)),
         heads[head_index],
         messages[message_index]);
-    auto item = new QListWidgetItem();
+    const auto item = new QListWidgetItem();
     item->setSizeHint(chat_user_wid->sizeHint());
     ui->chat_user_list->addItem(item);
     ui->chat_user_list->setItemWidget(item, chat_user_wid);
+  }
+}
+
+void ChatDialog::addLabelGroup(StateWidget* state_widget) {
+  state_widgets_.append(state_widget);
+}
+
+void ChatDialog::clearLabelState(const StateWidget* state_widget) {
+  for (const auto& w : state_widgets_) {
+    if (w == state_widget) continue;
+    w->clearState();
   }
 }

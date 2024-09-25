@@ -19,15 +19,16 @@ public:
   void mouseReleaseEvent(QMouseEvent* event) override;
   void enterEvent(QEvent* event) override;
   void leaveEvent(QEvent* event) override;
-  void setState(QString normal = "", QString hover = "", QString press = "",
-      QString select = "", QString select_hover = "",
-      QString select_press = "");
+  void setState(const QString& normal = "", const QString& hover = "",
+      const QString& press = "",
+      const QString& select = "", const QString& select_hover = "",
+      const QString& select_press = "");
   ClickLbState getCurSate() const;
 signals:
   void clicked();
 
 private:
-  void updateState(const QString state);
+  void updateState(const QString& state);
 
   ClickLbState cur_state_;
   QString normal_;

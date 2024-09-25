@@ -31,7 +31,7 @@ bool ChatUserList::eventFilter(QObject* watched, QEvent* event) {
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   } else if (event->type() == QEvent::Wheel) {
     setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-    auto wheel_event = dynamic_cast<QWheelEvent*>(event);
+    const auto wheel_event = dynamic_cast<QWheelEvent*>(event);
     const int num_degrees = wheel_event->angleDelta().y() / 8;
     const int num_steps = num_degrees / 15;
 

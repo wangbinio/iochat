@@ -28,7 +28,7 @@ void ChatUserWidget::setInfo(const QString& name, const QString& head,
   head_ = head;
   message_ = message;
 
-  QPixmap pixmap(head_);
+  const QPixmap pixmap(head_);
   ui->icon_lb->setPixmap(pixmap.scaled(ui->icon_lb->size(), Qt::KeepAspectRatio,
       Qt::SmoothTransformation));
   ui->icon_lb->setScaledContents(true);

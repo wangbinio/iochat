@@ -16,7 +16,7 @@ CustomizeEdit::CustomizeEdit(QWidget* parent) :
 CustomizeEdit::~CustomizeEdit() {
 }
 
-void CustomizeEdit::setMaxLength(int maxLength) {
+void CustomizeEdit::setMaxLength(const int maxLength) {
   max_length_ = maxLength;
 }
 
@@ -28,7 +28,7 @@ void CustomizeEdit::focusOutEvent(QFocusEvent* event) {
 void CustomizeEdit::limitTextLength(const QString& text) {
   if (max_length_ <= 0) return;
 
-  QByteArray byte_array = text.toUtf8();
+  const QByteArray byte_array = text.toUtf8();
 
   if (byte_array.length() > max_length_) {
     setText(byte_array.left(max_length_));

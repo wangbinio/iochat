@@ -27,12 +27,12 @@ public:
   ~ResetDialog() override;
 
 public slots:
-  void slot_reset_mod_finish(ReqId id, QString res, ErrorCode error_code);
+  void slot_reset_mod_finish(ReqId id, const QString& res, ErrorCode error_code);
 signals:
   void switchLogin();
 
 private:
-  void showTip(QString, bool);
+  void showTip(const QString&, bool);
   void initHttpHandlers();
 
   Ui::ResetDialog* ui;

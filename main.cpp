@@ -14,7 +14,7 @@ int main(int argc, char* argv[]) {
 
   QFile qss(":/style/stylesheet.qss");
   if (qss.open(QFile::ReadOnly)) {
-    QString style = qss.readAll();
+    const QString style = qss.readAll();
     a.setStyleSheet(style);
     qss.close();
   } else {
@@ -26,12 +26,12 @@ int main(int argc, char* argv[]) {
     return -1;
   }
 
-  QString file_name = "config.ini";
-  QString file_path = QApplication::applicationDirPath() + QDir::separator() +
-                      file_name;
-  QSettings settings(file_path, QSettings::IniFormat);
-  auto gate_host = settings.value("gate-server/host").toString();
-  auto gate_port = settings.value("gate-server/port").toString();
+  const QString file_name = "config.ini";
+  const QString file_path = QApplication::applicationDirPath() + QDir::separator() +
+                            file_name;
+  const QSettings settings(file_path, QSettings::IniFormat);
+  const auto gate_host = settings.value("gate-server/host").toString();
+  const auto gate_port = settings.value("gate-server/port").toString();
   gate_url_prefix = "http://" + gate_host + ":" + gate_port;
 
   MainWindow w;

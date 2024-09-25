@@ -19,12 +19,12 @@ LoginDialog::LoginDialog(QWidget* parent) : QDialog(parent),
       &LoginDialog::switchReset);
 
   connect(ui->login_btn, &QPushButton::clicked, this, [this] {
-    auto name = ui->user_lineEdit->text();
+    const auto name = ui->user_lineEdit->text();
     if (name.isEmpty()) {
       showTip(tr("用户名不能为空"), false);
       return;
     }
-    auto password = ui->passwd_lineEdit->text();
+    const auto password = ui->passwd_lineEdit->text();
     if (password.size() < 6 || password.size() > 15) {
       showTip(tr("密码长度应为6-15"), false);
       return;
@@ -56,8 +56,8 @@ LoginDialog::~LoginDialog() {
   delete ui;
 }
 
-void LoginDialog::slot_login_mod_finished(ReqId id, QString res,
-    ErrorCode error_code) {
+void LoginDialog::slot_login_mod_finished(const ReqId id, const QString& res,
+    const ErrorCode error_code) {
   if (error_code != ErrorCode::kSuccess) {
     showTip(tr("网络请求错误"), false);
     return;
@@ -77,7 +77,7 @@ void LoginDialog::slot_login_mod_finished(ReqId id, QString res,
   handlers_[id](json);
 }
 
-void LoginDialog::slot_tcp_con_finished(bool success) {
+void LoginDialog::slot_tcp_con_finished(const bool success) {
   if (!success) {
     fmt::print("网络异常\n");
     return;
@@ -91,13 +91,13 @@ void LoginDialog::slot_tcp_con_finished(bool success) {
       json.dump().c_str());
 }
 
-void LoginDialog::slot_login_failed(int error_code) {
+void LoginDialog::slot_login_failed(const int error_code) {
   showTip(QString("登录失败，错误码 %1").arg(error_code), false);
 }
 
 void LoginDialog::initHttpHandlers() {
   handlers_[kIdLOGIN_USER] = [this](nlohmann::json& json) {
-    int error_code = json["error"];
+    const int error_code = json["error"];
     if (error_code != ErrorCode::kSuccess) {
       showTip(tr("用户或密码错误"), false);
       return;
@@ -124,7 +124,7 @@ void LoginDialog::showTip(const QString& text, const bool normal) {
   }
 }
 
-void LoginDialog::enableBtn(bool enable) {
+void LoginDialog::enableBtn(const bool enable) {
   ui->login_btn->setEnabled(enable);
   ui->forget_btn->setEnabled(enable);
 }

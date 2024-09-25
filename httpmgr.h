@@ -10,7 +10,7 @@ class HttpMgr : public QObject, public Singleton<HttpMgr>,
 public:
   ~HttpMgr() override;
 
-  void PostHttpRequest(QUrl url, const nlohmann::json& json, ReqId req_id,
+  void PostHttpRequest(const QUrl& url, const nlohmann::json& json, ReqId req_id,
       Modules mod);
 
 private:
@@ -18,7 +18,7 @@ private:
   QNetworkAccessManager manager_;
 
 private slots:
-  void slot_http_finish(ReqId id, QString res, ErrorCode error_code,
+  void slot_http_finish(ReqId id, const QString& res, ErrorCode error_code,
       Modules mod);
 signals:
   void sig_http_finish(ReqId id, QString res, ErrorCode error_code,

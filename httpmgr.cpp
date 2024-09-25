@@ -4,9 +4,9 @@ HttpMgr::HttpMgr() {
   connect(this, &HttpMgr::sig_http_finish, this, &HttpMgr::slot_http_finish);
 }
 
-void HttpMgr::PostHttpRequest(QUrl url, const nlohmann::json& json,
+void HttpMgr::PostHttpRequest(const QUrl& url, const nlohmann::json& json,
     ReqId req_id, Modules mod) {
-  QByteArray data(json.dump().data());
+  const QByteArray data(json.dump().data());
   QNetworkRequest request(url);
   request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
   request.setHeader(QNetworkRequest::ContentLengthHeader,
@@ -22,15 +22,15 @@ void HttpMgr::PostHttpRequest(QUrl url, const nlohmann::json& json,
       return;
     }
 
-    QString res = reply->readAll();
+    const QString res = reply->readAll();
     emit sig_http_finish(req_id, res, ErrorCode::kSuccess, mod);
     reply->deleteLater();
     return;
   });
 }
 
-void HttpMgr::slot_http_finish(ReqId id, QString res, ErrorCode error_code,
-    Modules mod) {
+void HttpMgr::slot_http_finish(const ReqId id, const QString& res, const ErrorCode error_code,
+    const Modules mod) {
   if (mod == Modules::kRegisterMod) {
     emit sig_reg_mod_finish(id, res, error_code);
   } else if (mod == kResetMod) {

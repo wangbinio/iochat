@@ -54,7 +54,7 @@ TcpManager::TcpManager() {
 TcpManager::~TcpManager() {
 }
 
-void TcpManager::slot_tcp_connect(ServerInfo server_info) {
+void TcpManager::slot_tcp_connect(const ServerInfo& server_info) {
   fmt::print("TcpManager::slot_tcp_connect\n");
   fmt::print("Connecting to server {}:{}\n", server_info.host.toStdString(),
       server_info.port.toStdString());
@@ -78,7 +78,7 @@ void TcpManager::slot_send_data(const ReqId req_id, const QByteArray& data) {
 }
 
 void TcpManager::InitHandlers() {
-  handlers_[kIdCHAT_LOGIN_RSP] = [this](ReqId req_id, int len, const QByteArray&
+  handlers_[kIdCHAT_LOGIN_RSP] = [this](const ReqId req_id, int len, const QByteArray&
       data) {
         if (req_id != kIdCHAT_LOGIN_RSP) {
           fmt::print("Error: kIdCHAT_LOGIN_RSP recv {}\n",
@@ -107,7 +107,7 @@ void TcpManager::InitHandlers() {
       };
 }
 
-void TcpManager::HandleMessage(ReqId req_id, const int len,
+void TcpManager::HandleMessage(const ReqId req_id, const int len,
     const QByteArray& data) {
   const auto iter = handlers_.find(req_id);
   if (iter == handlers_.end()) {

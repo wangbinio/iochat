@@ -50,7 +50,7 @@ void MainWindow::showChatDialog() {
   chat_dlg_ = new ChatDialog(this);
   chat_dlg_->setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
   setCentralWidget(chat_dlg_);
-  setMinimumSize({800, 600});
+  setMinimumSize({1200, 800});
   setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
 }
 

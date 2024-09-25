@@ -33,10 +33,10 @@ ResetDialog::ResetDialog(QWidget* parent) :
       &ResetDialog::switchLogin);
 
   connect(ui->captcha_btn, &QPushButton::clicked, [this] {
-    auto email = ui->email_lineEdit->text();
+    const auto email = ui->email_lineEdit->text();
     static QRegularExpression regex(
         R"(^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$)");
-    auto match = regex.match(email).hasMatch();
+    const auto match = regex.match(email).hasMatch();
     if (!match) {
       showTip(tr("邮箱地址不正确"), false);
       ui->captcha_btn->Stop();
@@ -70,8 +70,8 @@ ResetDialog::~ResetDialog() {
   delete ui;
 }
 
-void ResetDialog::slot_reset_mod_finish(ReqId id, QString res,
-    ErrorCode error_code) {
+void ResetDialog::slot_reset_mod_finish(const ReqId id, const QString& res,
+    const ErrorCode error_code) {
   if (error_code != ErrorCode::kSuccess) {
     showTip(tr("网络请求错误"), false);
     return;
@@ -91,7 +91,7 @@ void ResetDialog::slot_reset_mod_finish(ReqId id, QString res,
   handlers_[id](json);
 }
 
-void ResetDialog::showTip(QString text, bool normal) {
+void ResetDialog::showTip(const QString& text, const bool normal) {
   ui->error_label->setText(text);
 
   ui->error_label->setProperty("state", normal ? "normal" : "error");
@@ -101,7 +101,7 @@ void ResetDialog::showTip(QString text, bool normal) {
 
 void ResetDialog::initHttpHandlers() {
   handlers_.insert(ReqId::kIdGetVerifyCode, [this](const nlohmann::json& json) {
-    int error_code = json["error"];
+    const int error_code = json["error"];
     if (error_code != ErrorCode::kSuccess) {
       showTip(tr("参数错误"), false);
       ui->captcha_btn->Stop();
@@ -117,7 +117,7 @@ void ResetDialog::initHttpHandlers() {
   });
 
   handlers_[kIdRESET_PWD] = [this](const nlohmann::json& json) {
-    int error_code = json["error"];
+    const int error_code = json["error"];
     if (error_code != ErrorCode::kSuccess) {
       showTip(tr("参数错误"), false);
       ui->captcha_btn->Stop();

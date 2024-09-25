@@ -23,7 +23,7 @@ public:
   explicit ClickedBtn(QWidget* parent = nullptr);
   ~ClickedBtn() override;
 
-  void setState(QString normal, QString hover, QString press);
+  void setState(const QString& normal, const QString& hover, const QString& press);
 
 protected:
   void enterEvent(QEvent* event) override;
@@ -31,7 +31,7 @@ protected:
   void mousePressEvent(QMouseEvent* event) override;
   void mouseReleaseEvent(QMouseEvent* event) override;
 
-  void updateState(QString state);
+  void updateState(const QString& state);
 
 private:
   QString normal_;

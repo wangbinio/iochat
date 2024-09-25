@@ -16,7 +16,7 @@ public:
   ~LoginDialog();
 
 public slots:
-  void slot_login_mod_finished(ReqId id, QString res, ErrorCode error_code);
+  void slot_login_mod_finished(ReqId id, const QString& res, ErrorCode error_code);
   void slot_tcp_con_finished(bool success);
   void slot_login_failed(int error_code);
 

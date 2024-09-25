@@ -68,10 +68,10 @@ RegisterDialog::~RegisterDialog() {
 }
 
 void RegisterDialog::on_captcha_btn_clicked() {
-  auto email = ui->email_lineEdit->text();
+  const auto email = ui->email_lineEdit->text();
   static QRegularExpression regex(
       R"(^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$)");
-  auto match = regex.match(email).hasMatch();
+  const auto match = regex.match(email).hasMatch();
   if (!match) {
     showTip(tr("邮箱地址不正确"), false);
     ui->captcha_btn->Stop();
@@ -103,8 +103,8 @@ void RegisterDialog::on_sure_btn_clicked() {
       QUrl(gate_url_prefix + "/user_register"), json, kIdRegUser, kRegisterMod);
 }
 
-void RegisterDialog::slot_reg_mod_finish(ReqId id, QString res,
-    ErrorCode error_code) {
+void RegisterDialog::slot_reg_mod_finish(const ReqId id, const QString& res,
+    const ErrorCode error_code) {
   if (error_code != ErrorCode::kSuccess) {
     showTip(tr("网络请求错误"), false);
     return;
@@ -124,7 +124,7 @@ void RegisterDialog::slot_reg_mod_finish(ReqId id, QString res,
   handlers_[id](json);
 }
 
-void RegisterDialog::showTip(QString text, bool normal) {
+void RegisterDialog::showTip(const QString& text, const bool normal) {
   ui->error_label->setText(text);
 
   ui->error_label->setProperty("state", normal ? "normal" : "error");
@@ -134,7 +134,7 @@ void RegisterDialog::showTip(QString text, bool normal) {
 
 void RegisterDialog::initHttpHandlers() {
   handlers_.insert(ReqId::kIdGetVerifyCode, [this](const nlohmann::json& json) {
-    int error_code = json["error"];
+    const int error_code = json["error"];
     if (error_code != ErrorCode::kSuccess) {
       showTip(tr("参数错误"), false);
       ui->captcha_btn->Stop();
@@ -150,7 +150,7 @@ void RegisterDialog::initHttpHandlers() {
   });
 
   handlers_.insert(ReqId::kIdRegUser, [this](const nlohmann::json& json) {
-    int error_code = json["error"];
+    const int error_code = json["error"];
     if (error_code != ErrorCode::kSuccess) {
       if (error_code == ErrorCode::kVerifyCodeErr) {
         showTip(tr("验证码错误"), false);
@@ -223,12 +223,12 @@ void RegisterDialog::initInputErrorCheck() {
   });
 }
 
-void RegisterDialog::addTip(TipErr tip_err, QString error) {
+void RegisterDialog::addTip(const TipErr tip_err, const QString& error) {
   tip_err_[tip_err] = error;
   showTip(error, false);
 }
 
-void RegisterDialog::delTip(TipErr tip_err) {
+void RegisterDialog::delTip(const TipErr tip_err) {
   tip_err_.remove(tip_err);
   if (tip_err_.empty()) {
     ui->error_label->clear();

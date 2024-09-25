@@ -18,7 +18,7 @@ public:
   ~TcpManager();
 
 public slots:
-  void slot_tcp_connect(ServerInfo server_info);
+  void slot_tcp_connect(const ServerInfo& server_info);
   void slot_send_data(ReqId req_id, const QByteArray& data);
 
 signals:

@@ -67,10 +67,8 @@ set(PROJECT_SOURCES
         chatuserlist.ui
         messagetextedit.cpp
         messagetextedit.h
-        messagetextedit.ui
         chatview.cpp
         chatview.h
-        chatview.ui
         chatuserwidget.cpp
         chatuserwidget.h
         chatuserwidget.ui
@@ -82,6 +80,16 @@ set(PROJECT_SOURCES
         chatpage.cpp
         chatpage.h
         chatpage.ui
+        chat_item_base.cpp
+        chat_item_base.h
+        bubble_frame.cpp
+        bubble_frame.h
+        text_bubble.cpp
+        text_bubble.h
+        picture_bubble.cpp
+        picture_bubble.h
+        statewidget.cpp
+        statewidget.h
 )
 
 add_executable(iochat

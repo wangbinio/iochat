@@ -18,16 +18,16 @@ public:
 private slots:
   void on_captcha_btn_clicked();
   void on_sure_btn_clicked();
-  void slot_reg_mod_finish(ReqId id, QString res, ErrorCode error_code);
+  void slot_reg_mod_finish(ReqId id, const QString& res, ErrorCode error_code);
 
 signals:
   void switchLogin();
 
 private:
-  void showTip(QString, bool);
+  void showTip(const QString&, bool);
   void initHttpHandlers();
   void initInputErrorCheck();
-  void addTip(TipErr tip_err, QString error);
+  void addTip(TipErr tip_err, const QString& error);
   void delTip(TipErr tip_err);
   void stopCountdownTimer();
 
